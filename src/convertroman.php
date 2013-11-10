@@ -32,15 +32,15 @@ class ConvertRoman implements RomanNumeralGenerator
 	const MIN_INT = 1; // minimum integer to be converted
 	const MAX_INT = 3999; // maximum integer to be converted
 
-	// The map / table to use for conversions
-	public $convertMap = array(
-						"1" => "I",
-						"5" => "V",
-						"10" => "X",
-						"50" => "L",
-						"100" => "C",
+	// The map to use for conversions
+	public $maps = array(
+						"1000" => "M",
 						"500" => "D",
-						"1000" => "M"
+						"100" => "C",
+						"50" => "L",
+						"10" => "X",
+						"5" => "V",
+						"1" => "I"
 						);
 
 	public $errorMessages = array(
@@ -60,20 +60,74 @@ class ConvertRoman implements RomanNumeralGenerator
 		// first we check that the revieved parameters are valid
 		if($this->validateIntger($int))
 		{
-			$result = 'PASSED!' . $int; // start with initial string
+			//$result = 'PASSED!' . $int; // start with initial string
+			$result = $this->convertFromInteger($int);
 			return $result;
 		}
 		else 
 		{
 			$this->handleInputError($int);
-		}
-
-		
+		}		
 	}
 
+	/**
+	 * This is the stub method for the public parse method which will convert
+	 * Roman Numerals into an integer
+	 * TODO: Still to commence work on this method
+	 * @param string $str The string of Roman Numerals to convert
+	 * @return int The integer value of the conversion
+	 */
 	public function parse($string)
 	{
 		$result = 0; // start with initial integer of 0
+	}
+
+	/** 
+	 * This is simple unit test function to allow for simple TDD without 
+	 * many dependencies on other libs / src etc.
+	 */
+	public function testGenerate($int, $expectedResult)
+	{
+		$result = $this->generate($int);
+		$testResult = ($result == $expectedResult) ? "PASSED" : "FAILED";
+		return ($testResult . ': ' . $int . ' = ' . $result . '<br/>');
+	}
+
+	/**
+	 * This is the actual conversion method that the generate function
+	 * uses to produce a returned value. This allows the core method to 
+	 * be maintained while allowing public generate method to be exposed
+	 * and have whatever specific validations etc incorporated.
+	 * required during the conversion
+	 * @param integer $int The integer to be converted into numerals
+	 * @return string The Roman numeral result of the conversion
+	 */
+	protected function convertFromInteger($int)
+	{
+		$result = ''; // we will store the returned results here
+		foreach($this->maps as $units => $map)
+		{
+			$result .= $this->getNumerals($map, floor($int/$units));
+			$int %= $units;
+		}
+		return $result;
+	}
+
+	/**
+	 * Construct the string of numerals for the number of times
+	 * required during the conversion
+	 * @param string $map The mapped numeral / character to use
+	 * @param int $int The number of times to repear the character
+	 * @return string The resultant string of characters 
+	 */
+	protected function getNumerals($map, $int)
+	{
+		$result = '';
+		while($int--)
+		{
+			$result .= $map;
+		}
+		return $result;
 	}
 
 	/**
@@ -102,7 +156,7 @@ class ConvertRoman implements RomanNumeralGenerator
 	 */
 	protected function handleInputError($int)
 	{
-		$msg = 'unknown errpr';
+		$msg = 'unknown error';
 
 		if(!$int)
 		{
