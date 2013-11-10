@@ -3,14 +3,14 @@
 /** 
  * The following Class and Interface have been developed as a solution to the
  * Developer Coding Kata v4 test set by the BBC Recruitment Team. The intent is 
- * to determine what approach and assuptions are used to build the solution
+ * to determine what approach and assumptions are used to build the solution
  * 
  * Tam Saunders 10/11/2013 - tam.saunders@gmail.com
  */
 
 /**
  * Interface definition for Roman Numerals convertor.
- * This is the interface definition procided for the test.
+ * This is the interface definition provided for the test.
  * It defines 2 public methods for converting to & from 
  * Roman numerals.
  */
