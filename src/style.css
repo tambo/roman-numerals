@@ -26,6 +26,7 @@
   border: 1px solid #FFCCCC;
 }
 .testHarness {
+    max-width: 50%;
     float:left;
     padding:0 25 25 25;
     background-color: #FCFCFC;
@@ -35,7 +36,7 @@
 }
 .testHarness div {
     width:100%;
-    margin-right:10px;
+    /*margin-right:10px;*/
     padding:2px;
     float:left;
     clear: both;

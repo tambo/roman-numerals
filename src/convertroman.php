@@ -43,6 +43,11 @@ class ConvertRoman implements RomanNumeralGenerator
 	const MIN_INT = 1; // minimum integer to be converted
 	const MAX_INT = 3999; // maximum integer to be converted
 
+	const NUMERALS_ALLOWED = "/[IVXLCDM]/";
+
+	const TYPE_INTEGER = "integer"; // const def used in error handling
+	const TYPE_NUMERAL = "numeral"; // const def used in error handling
+
 	// The map to use for conversions from integer
 	public $integerMap = array(
 						"1000" => "M",
@@ -64,7 +69,8 @@ class ConvertRoman implements RomanNumeralGenerator
 
 	public $errorMessages = array(
 						0 => "You must provide a valid integer",
-						1 => "You must input a number between 1 and 3999"
+						1 => "You must input a number between 1 and 3999",
+						2 => "Only numerals I,V,X,L,C,D & M are supported"
 						);
 
 
@@ -88,7 +94,7 @@ class ConvertRoman implements RomanNumeralGenerator
 		}
 		else 
 		{
-			$result = $this->handleInputError($int);
+			$result = $this->handleInputError(self::TYPE_INTEGER, $int);
 		}	
 
 		return $result;	
@@ -104,7 +110,17 @@ class ConvertRoman implements RomanNumeralGenerator
 	{
 		$result = 0; // start with initial integer of 0
 		$numerals = $string;
-		// create the numeral map if not already done
+
+		// first we check for valid input
+		$match = preg_grep(self::NUMERALS_ALLOWED, (str_split($numerals)), PREG_GREP_INVERT);
+		if(count($match) > 0)
+		{
+			// if string contains illegal characters
+			$result = $this->handleInputError(self::TYPE_NUMERAL); 
+			return $result;
+		}
+
+		// now create the numeral map if not already done
 		if(!$numeralMap)
 		{
 			$numeralMap = array_flip($this->integerMap);
@@ -123,38 +139,10 @@ class ConvertRoman implements RomanNumeralGenerator
 		// Finally we validate againsst the min / max rules for the API
 		if(!$this->validateIntger($result))
 		{
-			$result = $this->handleInputError($result);
+			$result = $this->handleInputError(self::TYPE_INTEGER, $result);
 		}	
 
 		return $result;
-	}
-
-	/** 
-	 * This is simple unit test function to allow for basic TDD without 
-	 * many dependencies on other libs / src etc.
-	 * @param Integer $int The integer to be converted into numerals
-	 * @param String $expectedResult - The expected sequence of Numerals
-	 * @return string The test result report
-	 */
-	public function testGenerate($int, $expectedResult)
-	{
-		$result = $this->generate($int);
-		$testResult = ($result == $expectedResult) ? "PASSED" : "FAILED";
-		return ('<div class="' . strtolower($testResult) . '">' . $testResult . ': ' . $int . ' = ' . $result . '</div>');
-	}
-
-	/** 
-	 * This is simple unit test function to allow for basic TDD without 
-	 * many dependencies on other libs / src etc.
-	 * @param nteger $int The integer to be converted into numerals
-	 * @param String $expectedResult - The expected integer value
-	 * @return string The test result report
-	 */
-	public function testParse($expectedResult, $string)
-	{
-		$result = $this->parse($string);
-		$testResult = ($result == $expectedResult) ? "PASSED" : "FAILED";
-		return ('<div class="' . strtolower($testResult) . '">' . $testResult . ': ' . $string . ' = ' . $result . '</div>');
 	}
 
 	/**
@@ -176,7 +164,7 @@ class ConvertRoman implements RomanNumeralGenerator
 	}
 
 	/**
-	 * The convertor must only accept integers within a valid range
+	 * The convertor must only convert integers within a valid range
 	 * This method returns a boolean indicating if the intger parameter is valid
 	 * @param integer $int The integer input
 	 * @return Boolan The validity of the integer
@@ -198,22 +186,32 @@ class ConvertRoman implements RomanNumeralGenerator
 	 * This method returns a short message describing the problem and provides 
 	 * an opportunity for future development to override and implement proper
 	 * exceptions / error handling if required.
+	 * @param string $inputType The type of input to handle error for
 	 * @param integer $int The integer input
 	 * @return string The error message
 	 */
-	protected function handleInputError($int)
+	protected function handleInputError($inputType, $int = null)
 	{
 		$msg = 'unknown error';
 
-		if(!$int)
+		switch($inputType)
 		{
-			$msg = $this->errorMessages[0];
-		}
+			case(self::TYPE_INTEGER):
+				if(!$int)
+				{
+					$msg = $this->errorMessages[0];
+				}
 
-		if($int < self::MIN_INT || $int > self::MAX_INT)
-		{
-			$msg = $this->errorMessages[1];
-		} 
+				if($int < self::MIN_INT || $int > self::MAX_INT)
+				{
+					$msg = $this->errorMessages[1];
+				} 
+				break;
+			case(self::TYPE_NUMERAL):
+				$msg = $this->errorMessages[2];
+				break;
+		}
+		
 
 		//throw new Exception($msg);
 		return $msg;

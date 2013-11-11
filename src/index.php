@@ -1,18 +1,28 @@
 <?php
- require_once("convertroman.php");
 
- $convertor = new ConvertRoman();
+require_once("convertroman.php");
+require_once("convertroman_tests.php");
 
+$convertor = new ConvertRoman();
+
+$convertorTest = new ConvertRoman_Tests();
+
+// set the default in/out vars for handling integer conversion requests
 $input_integer = '';
 $output_numerals = '&nbsp;';
+
+// handle integer conversion requests
 if(isset($_POST['input_integer']))
 {
 	$input_integer = $_POST['input_integer'];
 	$output_numerals = "Result = " . $convertor->generate($_POST['input_integer']);
 }
 
+// set the default in/out vars for handling numeral conversion requests
 $input_numerals = '';
 $output_integer = '&nbsp;';
+
+// handle numeral conversion requests
 if(isset($_POST['input_numerals']))
 {
 	$input_integer = $_POST['input_numerals'];
@@ -25,10 +35,16 @@ ob_start();
 ?>
 <html>
   	<head>
+  		<title>Roman Numerals - Convertor</title>
   		<link rel="stylesheet" href="style.css">
   	</head>
   	<body>
 	  	<div class="main">
+	  		<div class="intro">
+	  			<h3>Roman Numeral Convertor</h3>
+	  			<form action="test_convertor.php" target="testAll">
+	  			<p>This interface lets you convert to and from Roman Numerals in the range 1 to 3999. Click here to see a complete test of the generator <button type="submit">Complete Test</button></p>
+		  		</form>
 		  	<div class="testHarness">
 		  		<div class="interface">
 			  		<h3>Try the Roman Numeral Generator</h3>
@@ -42,7 +58,7 @@ ob_start();
 			  	</div>
 
 			  	<div>
-				  	<h3>Generate Unit tests:</h3>
+				  	<h3>Generator - unit tests:</h3>
 				  	<div class="unitTest">
 				  		<p>The following are a series of unit test ran against the generate method</p>
 					  	<?php
@@ -50,23 +66,29 @@ ob_start();
 					  		try
 					  		{
 					  			// test conversion to Roman numerals
-					  			echo $convertor->testGenerate(4, "IV");
-					  			echo $convertor->testGenerate(9, "IX");
-					  			echo $convertor->testGenerate(25, "XXV");
-					  			echo $convertor->testGenerate(49, "XLIX");
-					  			echo $convertor->testGenerate(50, "L");
-					  			echo $convertor->testGenerate(100, "C");
-					  			echo $convertor->testGenerate(200, "CC");
-					  			echo $convertor->testGenerate(500, "D");
-					  			echo $convertor->testGenerate(999, "CMXCIX");
-					  			echo $convertor->testGenerate(1000, "M");
-					  			echo $convertor->testGenerate(1066, "MLXVI");
-					  			echo $convertor->testGenerate(1967, "MCMLXVII");
-					  			echo $convertor->testGenerate(1975, "MCMLXXV");
-					  			echo $convertor->testGenerate(1999, "MCMXCIX");
-					  			echo $convertor->testGenerate(2013, "MMXIII");
-					  			echo $convertor->testGenerate(3999, "MMMCMXCIX");
-					  			echo $convertor->testGenerate(4000, "MMMM");
+					  			echo $convertorTest->testGenerate(4, "IV");
+					  			echo $convertorTest->testGenerate(9, "IX");
+					  			echo $convertorTest->testGenerate(25, "XXV");
+					  			echo $convertorTest->testGenerate(49, "XLIX");
+					  			echo $convertorTest->testGenerate(50, "L");
+					  			echo $convertorTest->testGenerate(100, "C");
+					  			echo $convertorTest->testGenerate(200, "CC");
+					  			echo $convertorTest->testGenerate(500, "D");
+					  			echo $convertorTest->testGenerate(999, "CMXCIX");
+					  			echo $convertorTest->testGenerate(1000, "M");
+					  			echo $convertorTest->testGenerate(1066, "MLXVI");
+					  			echo $convertorTest->testGenerate(1967, "MCMLXVII");
+					  			echo $convertorTest->testGenerate(1975, "MCMLXXV");
+					  			echo $convertorTest->testGenerate(1999, "MCMXCIX");
+					  			echo $convertorTest->testGenerate(2013, "MMXIII");
+					  			echo $convertorTest->testGenerate(3999, "MMMCMXCIX");
+					  			echo $convertorTest->testGenerate(4000, "MMMM");
+					  		} 
+					  		catch(Exception $e) 
+					  		{
+					  			echo "Error " . $e;
+					  		}
+
 					  		?>
 					  	</div>
 					</div>
@@ -83,33 +105,36 @@ ob_start();
 				  	<div class="result"><?= $output_integer ?></div>
 			  	</div>
 				<div>
-					<h3>Parse tests:</h3>
+					<h3>Parser - unit tests:</h3>
 				  	<div class="unitTest">
 						<p>The following are a series of unit test ran against the parse method</p>
 						<?php
-				  			// test conversion from Roman numerals
-				  			echo $convertor->testParse(4, "IV");
-				  			echo $convertor->testParse(9, "IX");
-				  			echo $convertor->testParse(25, "XXV");
-				  			echo $convertor->testParse(49, "XLIX");
-				  			echo $convertor->testParse(50, "L");
-				  			echo $convertor->testParse(100, "C");
-				  			echo $convertor->testParse(200, "CC");
-				  			echo $convertor->testParse(500, "D");
-				  			echo $convertor->testParse(999, "CMXCIX");
-				  			echo $convertor->testParse(1000, "M");
-				  			echo $convertor->testParse(1066, "MLXVI");
-				  			echo $convertor->testParse(1967, "MCMLXVII");
-				  			echo $convertor->testParse(1975, "MCMLXXV");
-				  			echo $convertor->testParse(1999, "MCMXCIX");
-				  			echo $convertor->testParse(2013, "MMXIII");
-				  			echo $convertor->testParse(3999, "MMMCMXCIX");
-				  			echo $convertor->testParse(4000, "MMMM");
-				  		} 
-				  		catch(Exception $e) 
-				  		{
-				  			echo "Error " . $e;
-				  		}
+
+							try
+					  		{
+					  			// test conversion from Roman numerals
+					  			echo $convertorTest->testParse(4, "IV");
+					  			echo $convertorTest->testParse(9, "IX");
+					  			echo $convertorTest->testParse(25, "XXV");
+					  			echo $convertorTest->testParse(49, "XLIX");
+					  			echo $convertorTest->testParse(50, "L");
+					  			echo $convertorTest->testParse(100, "C");
+					  			echo $convertorTest->testParse(200, "CC");
+					  			echo $convertorTest->testParse(500, "D");
+					  			echo $convertorTest->testParse(999, "CMXCIX");
+					  			echo $convertorTest->testParse(1000, "M");
+					  			echo $convertorTest->testParse(1066, "MLXVI");
+					  			echo $convertorTest->testParse(1967, "MCMLXVII");
+					  			echo $convertorTest->testParse(1975, "MCMLXXV");
+					  			echo $convertorTest->testParse(1999, "MCMXCIX");
+					  			echo $convertorTest->testParse(2013, "MMXIII");
+					  			echo $convertorTest->testParse(3999, "MMMCMXCIX");
+					  			echo $convertorTest->testParse(4000, "MMMM");
+					  		} 
+					  		catch(Exception $e) 
+					  		{
+					  			echo "Error " . $e;
+					  		}
 
 				  		?>
 				  	</div>
