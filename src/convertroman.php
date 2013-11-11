@@ -5,7 +5,7 @@
  * Developer Coding Kata v4 test set by the BBC Recruitment Team. The intent is 
  * to determine what approach and assumptions are used to build the solution
  * 
- * THere are a variety of ways to repesent Roman Numerals, this class currently 
+ * There are a variety of ways to repesent Roman Numerals, this class currently 
  * supports the more generally modern approach of using subtractive rather than
  * additive form, but could easily be adapted to support additive or both forms
  * instead.
@@ -97,7 +97,6 @@ class ConvertRoman implements RomanNumeralGenerator
 	/**
 	 * This is the stub method for the public parse method which will convert
 	 * Roman Numerals into an integer
-	 * TODO: Still to commence work on this method
 	 * @param string $str The string of Roman Numerals to convert
 	 * @return int The integer value of the conversion
 	 */
@@ -111,6 +110,9 @@ class ConvertRoman implements RomanNumeralGenerator
 			$numeralMap = array_flip($this->integerMap);
 		}
 
+		/* iterate through the keys adding up the mapped values as we go
+		 * and removing the matched string chunks
+		 */
 		foreach ($numeralMap as $units => $map) {
 	    	while (strpos($numerals, $units) === 0) {
 		        $result += $map;
@@ -118,6 +120,7 @@ class ConvertRoman implements RomanNumeralGenerator
 		    }
 		}
 
+		// Finally we validate againsst the min / max rules for the API
 		if(!$this->validateIntger($result))
 		{
 			$result = $this->handleInputError($result);
@@ -156,7 +159,8 @@ class ConvertRoman implements RomanNumeralGenerator
 
 	/**
 	 * Construct the string of numerals for the number of times
-	 * required during the conversion
+	 * required during the conversion. This is a simple secondary function 
+	 * which helps keep things neat and tidy
 	 * @param string $map The mapped numeral / character to use
 	 * @param int $int The number of times to repear the character
 	 * @return string The resultant string of characters 
@@ -173,7 +177,7 @@ class ConvertRoman implements RomanNumeralGenerator
 
 	/**
 	 * The convertor must only accept integers within a valid range
-	 * This method returns a boolean indicating it the intger parameter is valid
+	 * This method returns a boolean indicating if the intger parameter is valid
 	 * @param integer $int The integer input
 	 * @return Boolan The validity of the integer
 	 */
@@ -191,10 +195,11 @@ class ConvertRoman implements RomanNumeralGenerator
 
 	/**
 	 * The convertor should handle any errors with some degree of grace. 
-	 * This method throws an exception with a short message and as such provides 
-	 * a resonable mechanism for extending the convertor to better handle errors
+	 * This method returns a short message describing the problem and provides 
+	 * an opportunity for future development to override and implement proper
+	 * exceptions / error handling if required.
 	 * @param integer $int The integer input
-	 * @return srting The error message
+	 * @return string The error message
 	 */
 	protected function handleInputError($int)
 	{
