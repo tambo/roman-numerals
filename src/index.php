@@ -25,7 +25,7 @@ $output_integer = '&nbsp;';
 // handle numeral conversion requests
 if(isset($_POST['input_numerals']))
 {
-	$input_integer = $_POST['input_numerals'];
+	$input_numerals = $_POST['input_numerals'];
 	$output_integer = "Result = " . $convertor->parse($_POST['input_numerals']);
 }
 
