@@ -1,0 +1,54 @@
+.main {
+    max-width:80%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: left;
+}
+.interface {
+    float:left;
+    padding: 25px;
+    margin-right: auto;
+    margin-left: auto;
+}
+.interface p {
+  max-width: 250px;
+}
+.inputForm {
+    width:100%;
+    float:left;
+    clear: both;
+}
+.result {
+  margin-top: 10px;
+  padding:25px;
+  font-weight: bold;
+  background-color: #FFFFFF;
+  border: 1px solid #FFCCCC;
+}
+.testHarness {
+    float:left;
+    padding:0 25 25 25;
+    background-color: #FCFCFC;
+    border: 1px solid #E9E9E9;
+    margin-right: auto;
+    margin-left: auto;
+}
+.testHarness div {
+    width:100%;
+    margin-right:10px;
+    padding:2px;
+    float:left;
+    clear: both;
+}
+.unitTest {
+  background-color: #FFFFFF;
+}
+.unitTest p{
+ max-width: 250px;
+}
+.failed {
+    background-color: #FCC4C4;
+}
+.passed {
+    background-color: #DBFFDB;
+}
