@@ -1,6 +1,10 @@
 roman-numerals
 ==============
 
+version 1.0.1 (8/5/16)
+
+This is a fork from the original version and adds namespace and a composer.json file so it can be included in other repos.
+
 version 1.0 (11/11/13)
 
 Kata to demonstrate approach with PHP roman-numerals convertor.
