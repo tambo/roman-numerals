@@ -1,0 +1,9 @@
+{
+    "name": "fusani/roman-numerals",
+    "description": "Roman numeral converter",
+    "autoload": {
+        "psr-4": {
+            "Fusani\\RomanNumeral\\": ["src/"]
+        }
+    }
+}
