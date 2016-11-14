@@ -1,11 +1,13 @@
-<?
+<?php
 
-/** 
+namespace Fusani\RomanNumeral;
+
+/**
  * The following Class and Interface have been developed as a solution to the
- * Developer Coding Kata v4 test set by the BBC Recruitment Team. The intent is 
+ * Developer Coding Kata v4 test set by the BBC Recruitment Team. The intent is
  * to determine what approach and assumptions are used to build the solution
- * 
- * There are a variety of ways to repesent Roman Numerals, this class currently 
+ *
+ * There are a variety of ways to repesent Roman Numerals, this class currently
  * supports the more generally modern approach of using subtractive rather than
  * additive form, but could easily be adapted to support additive or both forms
  * instead.
@@ -16,10 +18,10 @@
 /**
  * Interface definition for Roman Numerals convertor.
  * This is the interface definition provided for the test.
- * It defines 2 public methods for converting to & from 
+ * It defines 2 public methods for converting to & from
  * Roman numerals.
  */
-interface RomanNumeralGenerator 
+interface RomanNumeralGenerator
 {
 	public function generate($int); // convert from int -> roman
 	public function parse($string); // convert from roman -> int
@@ -29,7 +31,7 @@ interface RomanNumeralGenerator
  * This is the base class which forms the public API for the convertor
  * Call either of the public methods with an appropriate valid input to
  * convert to/from roman numerals
- * @example - 
+ * @example -
  *
  * $myConvertor = new ConvertRoman();
  * echo $myConvertor->generate(2013);
@@ -75,7 +77,7 @@ class ConvertRoman implements RomanNumeralGenerator
 
 
 	/**
-	 * The generate function accepts an intger in the given range and returns 
+	 * The generate function accepts an intger in the given range and returns
 	 * a string in Roman Numeral format
 	 * @param integer $int The integer to be converted into numerals
 	 * @return string The Roman numeral result of the conversion
@@ -92,12 +94,12 @@ class ConvertRoman implements RomanNumeralGenerator
 				$int %= $units;
 			}
 		}
-		else 
+		else
 		{
 			$result = $this->handleInputError(self::TYPE_INTEGER, $int);
-		}	
+		}
 
-		return $result;	
+		return $result;
 	}
 
 	/**
@@ -116,7 +118,7 @@ class ConvertRoman implements RomanNumeralGenerator
 		if(count($match) > 0)
 		{
 			// if string contains illegal characters
-			$result = $this->handleInputError(self::TYPE_NUMERAL); 
+			$result = $this->handleInputError(self::TYPE_NUMERAL);
 			return $result;
 		}
 
@@ -140,18 +142,18 @@ class ConvertRoman implements RomanNumeralGenerator
 		if(!$this->validateIntger($result))
 		{
 			$result = $this->handleInputError(self::TYPE_INTEGER, $result);
-		}	
+		}
 
 		return $result;
 	}
 
 	/**
 	 * Construct the string of numerals for the number of times
-	 * required during the conversion. This is a simple secondary function 
+	 * required during the conversion. This is a simple secondary function
 	 * which helps keep things neat and tidy
 	 * @param string $map The mapped numeral / character to use
 	 * @param int $int The number of times to repear the character
-	 * @return string The resultant string of characters 
+	 * @return string The resultant string of characters
 	 */
 	protected function getNumerals($map, $int)
 	{
@@ -174,16 +176,16 @@ class ConvertRoman implements RomanNumeralGenerator
 		if(!$int || $int < self::MIN_INT || $int > self::MAX_INT)
 		{
  			return false;
-		} 
-		else 
+		}
+		else
 		{
 			return true;
 		}
 	}
 
 	/**
-	 * The convertor should handle any errors with some degree of grace. 
-	 * This method returns a short message describing the problem and provides 
+	 * The convertor should handle any errors with some degree of grace.
+	 * This method returns a short message describing the problem and provides
 	 * an opportunity for future development to override and implement proper
 	 * exceptions / error handling if required.
 	 * @param string $inputType The type of input to handle error for
@@ -205,13 +207,13 @@ class ConvertRoman implements RomanNumeralGenerator
 				if($int < self::MIN_INT || $int > self::MAX_INT)
 				{
 					$msg = $this->errorMessages[1];
-				} 
+				}
 				break;
 			case(self::TYPE_NUMERAL):
 				$msg = $this->errorMessages[2];
 				break;
 		}
-		
+
 
 		//throw new Exception($msg);
 		return $msg;
